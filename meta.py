@@ -60,9 +60,37 @@ winRatios = []
 for openingStats in openingData:
     name, occurrences, wins = openingStats
     if occurrences > 25:
-        success_ratio = wins / occurrences if occurrences > 0 else 0
-        winRatios.append([name, success_ratio])
+        successRatio = wins / occurrences if occurrences > 0 else 0
+        winRatios.append([name, successRatio])
 
 #display result
+# for opening_ratio in winRatios:
+#     print(f"Opening: {opening_ratio[0]}, Success Ratio: {opening_ratio[1]}")
+
+#Referenced from DSA Module 6 - Sorting by Amanpreet Kapoor
+def quickSort(arr, low, high):
+    if low < high:
+        pivot  = partition(arr, low, high)
+        quickSort(arr, low, pivot - 1)
+        quickSort(arr, pivot + 1, high)
+
+def partition(arr, low, high):
+    pivot = arr[low][1]
+    up = low
+    down = high
+
+    while up < down:
+        while up < high and arr[up][1] <= pivot:
+            up += 1
+        while arr[down][1] > pivot:
+            down -= 1
+
+        if up < down:
+            arr[up], arr[down] = arr[down], arr[up]
+
+    arr[low], arr[down] = arr[down], arr[low]
+    return down
+
+quickSort(winRatios, 0, len(winRatios) - 1)
 for opening_ratio in winRatios:
     print(f"Opening: {opening_ratio[0]}, Success Ratio: {opening_ratio[1]}")
