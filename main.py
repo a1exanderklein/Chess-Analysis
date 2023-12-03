@@ -14,7 +14,7 @@ def gnomesort(arr, size):
             temp = arr[i]
             arr[i] = arr[i - 1]
             arr[i - 1] = temp
-            i = i -1
+            i = i - 1
     return arr
 
 
