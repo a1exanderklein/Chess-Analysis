@@ -8,6 +8,7 @@ class ChessAnalyzer:
         self.openingData = []
         self.playerData = []
         self.winRatios = []
+        self.playerOpeningUsage = {}
 
     def printer(self):
         for opening_ratio in self.winRatios:
@@ -75,6 +76,25 @@ class ChessAnalyzer:
                 if occurrences > 25: #only if it occurs over 25 to eliminate noise of 100% success rates in few games
                     successRatio = wins / occurrences if occurrences > 0 else 0
                     self.winRatios.append([name, successRatio])
+
+
+    def getPlayerOpeningUsage(self, name):
+        if name not in self.playerOpeningUsage:
+            self.playerOpeningUsage[name] = {}
+
+        with open(self.csvFile, newline='') as csvfile:
+            csvReader = csv.DictReader(csvfile)
+            for row in csvReader:
+                playerName = row['White']
+                openingName = row['Opening']
+                if playerName == name:
+                    if openingName not in self.playerOpeningUsage[name]:
+                        self.playerOpeningUsage[name][openingName] = 0
+                    self.playerOpeningUsage[name][openingName] += 1
+
+        for move in self.playerOpeningUsage[name]:
+            print(f"{move}: {self.playerOpeningUsage[name][move]}")
+
 
     #Referenced from DSA Module 6 - Sorting by Amanpreet Kapoor
     #Time - Worst O(N^2)

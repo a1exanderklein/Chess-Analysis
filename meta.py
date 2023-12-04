@@ -38,22 +38,22 @@ while notExited:
         else:
             print("Invalid choice. Please enter a valid number.")
 
-
+    print(f"Gathering Data from {mode} mode...\n")
     analyzer = ChessAnalyzer(selectedModes=selectedModes)
 
     selectedQuery = False
-    print("What data would you like to analyze?\n(1) Opening win rate data\n(2) Player win rate data\n(3) Exit Analyzer")
+    print("What data would you like to analyze?\n(1) Opening data\n(2) Player data\n(3) Exit Analyzer")
     while selectedQuery == False:
         inputQuery = input("Enter your Choice: ")
         if inputQuery == '1':
-            print(f"Gathering Data from {mode} mode...\n")
             print("Sorting Opening data...\n")
             selectedQuery = True
             analyzer.openingAnalyzer()
         elif inputQuery == '2':
-            print(f"Gathering Data from {mode} mode...\n")
             print("Sorting Player data...\n")
-            analyzer.playerAnalyzer()
+            # analyzer.playerAnalyzer()
+            name = input ("Enter name of player")
+            analyzer.getPlayerOpeningUsage()
             selectedQuery = True
         elif inputQuery == '3':
             notExited = False
