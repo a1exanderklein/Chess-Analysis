@@ -6,10 +6,10 @@ class ChessAnalyzer:
         self.selectedModes = selectedModes if selectedModes is not None else []
         self.mode = ""
         self.eloData = []
-        self.eloData2 = []
         self.openingData = []
         self.playerData = {}
         self.winRatios = []
+        self.winRatios2 = []
         self.playerOpeningUsage = {}
 
     def printer(self):
@@ -36,7 +36,6 @@ class ChessAnalyzer:
 
                 # Append data to eloData list
                 self.eloData.append([opening, whitePlayerElo, blackPlayerElo, whiteRatingDiff, result])
-            self.eloData2 = self.eloData
                 
 
     def openingAnalyzer(self):
@@ -71,6 +70,7 @@ class ChessAnalyzer:
                 if occurrences > 25: #only if it occurs over 25 to eliminate noise of 100% success rates in few games
                     successRatio = wins / occurrences if occurrences > 0 else 0
                     self.winRatios.append([name, successRatio])
+            self.winRatios2 = self.winRatios
 
     def playerAnalyzer(self):
         with open(self.csvFile, newline='') as csvfile:
