@@ -67,6 +67,19 @@ while notExited:
             name = input ("Enter name of player: ")
             analyzer.getPlayerOpeningUsage(name)
             selectedQuery = True
+
+        elif inputQuery == '3':
+            print("Sorting ELO data...\n")
+            analyzer.eloAnalyzer()
+            start = time.time()
+            analyzer.mergeSort(analyzer.eloData2)
+            end = time.time()
+            print(f"Merge sort completed in {end-start} seconds")
+            start = time.time()
+            analyzer.quickSort(analyzer.eloData, 0, len(analyzer.eloData) - 1)
+            end = time.time()
+            print(f"Quick sort completed in {end-start} seconds")
+
         elif inputQuery == '4':
             notExited = False
             selectedQuery = True
