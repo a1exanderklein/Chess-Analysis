@@ -126,6 +126,7 @@ class ChessAnalyzer:
             pivot = self.partition(arr, low, high) #find pivot
             self.quickSort(arr, low, pivot - 1) #call on left
             self.quickSort(arr, pivot + 1, high) #call on right
+        return arr
 
     def partition(self, arr, low, high):
         pivot = arr[low][1] #choose first element of array for pivot
@@ -174,6 +175,7 @@ class ChessAnalyzer:
                     arr[i] = right[r]
                     i = i + 1
                     r = r + 1
+        return arr
 
     # def openingPrinter(self, num):
     #     self.winRatios.reverse()

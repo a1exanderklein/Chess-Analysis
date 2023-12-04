@@ -57,6 +57,10 @@ while notExited:
             analyzer.mergeSort(analyzer.winRatios)
             end = time.time()
             print(f"Merge sort completed in {end-start} seconds")
+            start = time.time()
+            analyzer.quickSort(analyzer.winRatios2, 0, len(analyzer.winRatios2)-1)
+            end = time.time()
+            print(f"Quick sort completed in {end-start} seconds")
 
             analyzer.openingPrinter(int(numOpenings))
 
