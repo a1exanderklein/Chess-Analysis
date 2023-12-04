@@ -6,7 +6,7 @@ class ChessAnalyzer:
         self.selectedModes = selectedModes if selectedModes is not None else []
         self.mode = ""
         self.openingData = []
-        self.playerData = []
+        self.playerData = {}
         self.winRatios = []
         self.playerOpeningUsage = {}
 
@@ -57,25 +57,17 @@ class ChessAnalyzer:
                 if any(mode in gameMode for mode in self.selectedModes):
                     result = row['Result']
                     playerName = row['White']
-                    playerELO = row['WhileElo']
+                    playerELO = row['WhiteElo']
                     #check if the player is already in the list
-                    found = False
-                    for openingVector in self.openingData:
-                        if openingVector[0] == playerName:
-                            #check if game result is a win (1-0)
-                            if result == '1-0':
-                                openingVector[2] += 1
-                            found = True
-                            break
+                        # Initialize player data in dictionary if not already present
+                    if playerName not in self.playerData:
+                        self.playerData[playerName] = {'ELO': playerELO, 'Occurrences': 0, 'Wins': 0}
+                    # Update occurrences
+                    self.playerData[playerName]['Occurrences'] += 1
+                    # Check if game result is a win (1-0) and update wins
+                    if result == '1-0':
+                        self.playerData[playerName]['Wins'] += 1
 
-                    #if opening not in list, add with initial counts based on the result
-                    if not found:
-                        self.playerData.append([playerName, playerELO, 1 if result == '1-0' else 0])
-            for openingStats in self.PlayerData:
-                name, occurrences, wins = openingStats #what is in the lists in the opening data list
-                if occurrences > 25: #only if it occurs over 25 to eliminate noise of 100% success rates in few games
-                    successRatio = wins / occurrences if occurrences > 0 else 0
-                    self.winRatios.append([name, successRatio])
 
 
     def getPlayerOpeningUsage(self, name):
@@ -91,9 +83,11 @@ class ChessAnalyzer:
                     if openingName not in self.playerOpeningUsage[name]:
                         self.playerOpeningUsage[name][openingName] = 0
                     self.playerOpeningUsage[name][openingName] += 1
-
-        for move in self.playerOpeningUsage[name]:
-            print(f"{move}: {self.playerOpeningUsage[name][move]}")
+        sorted_openings = sorted(self.playerOpeningUsage[name].items(), key=lambda x: x[1], reverse=True)
+        playerStats = self.playerData[name]
+        print(f"{name}: {playerStats['ELO']} ELO, {playerStats['Wins']} Wins")
+        for i in range(3):
+            print(f"{sorted_openings[i][0]}: Used {sorted_openings[i][1]} times")
 
 
     #Referenced from DSA Module 6 - Sorting by Amanpreet Kapoor
