@@ -74,31 +74,3 @@ while notExited:
             print("Bye!")
         else:
             print("Invalid choice. Please enter a valid number.")
-
-<<<<<<< HEAD
-   
-
-
-
-=======
->>>>>>> 8d7bdbbeb5e81452a38e88137904e6ce59a92183
-    # Ask which sorting method they want to use
-    # print("Which sorting method would you like to use?\n(1) Merge Sort\n(2) Quick Sort")
-    # chosenSort = '0'
-
-    # while chosenSort == '0':
-    #     chosenSort = input("Enter your choice: ")
-    #     if chosenSort == '1':
-    #         start = time.time()
-    #         analyzer.mergeSort(analyzer.winRatios)
-    #         end = time.time()
-    #         print(f"Merge sort from {mode} completed in {end-start} seconds")
-    #     elif chosenSort == '2':
-    #         start = time.time()
-    #         analyzer.quickSort(analyzer.winRatios, 0, len(analyzer.winRatios) - 1)
-    #         end = time.time()
-    #         print(f"Quick sort from {mode} completed in {end-start} seconds")
-    #     else:
-    #          print("Invalid choice. Please enter a valid number.")
-
-    # analyzer.printer()
