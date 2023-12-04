@@ -28,7 +28,7 @@ else:
     print("Invalid choice. Please enter a valid game mode.")
 
 
-openingData = [] #list of pairs (Opening, # of Occurrences)
+openingData = [] #list of pairs (Opening, # of Occurrences, # of Wins)
 with open(csvFile, newline='') as csvfile:
     #creates csv manager for traversing rows
     csvReader = csv.DictReader(csvfile)
@@ -38,20 +38,19 @@ with open(csvFile, newline='') as csvfile:
         if any(mode in gameMode for mode in selectedModes):
             result = row['Result']
             openingName = row['Opening']
-
-            # Check if the opening is already in the list
+            #check if the opening is already in the list
             found = False
             for openingVector in openingData:
                 if openingVector[0] == openingName:
-                    # Increment occurrences count
+                    #increment occurrences count
                     openingVector[1] += 1
-                    # Check if the game result is a win (1-0)
+                    #check if game result is a win (1-0)
                     if result == '1-0':
                         openingVector[2] += 1
                     found = True
                     break
 
-            # If opening not in list, add with initial counts based on the result
+            #if opening not in list, add with initial counts based on the result
             if not found:
                 openingData.append([openingName, 1, 1 if result == '1-0' else 0])
 
@@ -91,6 +90,38 @@ def partition(arr, low, high):
     arr[low], arr[down] = arr[down], arr[low]
     return down
 
-quickSort(winRatios, 0, len(winRatios) - 1)
+def mergeSort(arr):
+    if len(arr) > 1:
+        middle = len(arr)//2
+        left = arr[0:middle]
+        right = arr[middle:len(arr)]
+        mergeSort(left)
+        mergeSort(right)
+        l = 0
+        r = 0
+        i = 0
+        while l < len(left) and r < len(right):
+            if left[l] > right[r]:
+                arr[i] = right[r]
+                r = r + 1
+                i = i + 1
+            else:
+                arr[i] = left[l]
+                l = l + 1
+                i = i + 1
+        if l < len(left):
+            while l < len(left):
+                arr[i] = left[l]
+                i = i + 1
+                l = l + 1
+        if r < len(right):
+            while r < len(right):
+                arr[i] = right[r]
+                i = i + 1
+                r = r + 1
+    return arr
+
+# quickSort(winRatios, 0, len(winRatios) - 1)
+mergeSort(winRatios)
 for opening_ratio in winRatios:
     print(f"Opening: {opening_ratio[0]}, Success Ratio: {opening_ratio[1]}")
