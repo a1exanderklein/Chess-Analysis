@@ -62,33 +62,33 @@ for openingStats in openingData:
         successRatio = wins / occurrences if occurrences > 0 else 0
         winRatios.append([name, successRatio])
 
-#display result
-# for opening_ratio in winRatios:
-#     print(f"Opening: {opening_ratio[0]}, Success Ratio: {opening_ratio[1]}")
+def printer(arr):
+    for opening_ratio in arr:
+        print(f"Opening: {opening_ratio[0]}, Success Ratio: {opening_ratio[1]}")
 
 #Referenced from DSA Module 6 - Sorting by Amanpreet Kapoor
 def quickSort(arr, low, high):
+    #check if sortable
     if low < high:
-        pivot  = partition(arr, low, high)
-        quickSort(arr, low, pivot - 1)
-        quickSort(arr, pivot + 1, high)
+        pivot = partition(arr, low, high) #find pivot
+        quickSort(arr, low, pivot - 1) #call on left
+        quickSort(arr, pivot + 1, high) #call on right
 
 def partition(arr, low, high):
-    pivot = arr[low][1]
+    pivot = arr[low][1] #choose first element of array for pivot
     up = low
     down = high
 
-    while up < down:
-        while up < high and arr[up][1] <= pivot:
-            up += 1
-        while arr[down][1] > pivot:
-            down -= 1
-
-        if up < down:
+    while up < down: #continue til they pass eachother
+        while up < high and arr[up][1] <= pivot: #while up is not past down & up is not greater than the pivot value
+            up += 1 #go right
+        while arr[down][1] > pivot: #while down is not less than pivot value
+            down -= 1 #go left
+        if up < down: #if up still < down, swap
             arr[up], arr[down] = arr[down], arr[up]
 
-    arr[low], arr[down] = arr[down], arr[low]
-    return down
+    arr[low], arr[down] = arr[down], arr[low] #swap pivot and down
+    return down #return pivot index after partition
 
 def mergeSort(arr):
     if len(arr) > 1:
@@ -123,5 +123,4 @@ def mergeSort(arr):
 
 # quickSort(winRatios, 0, len(winRatios) - 1)
 mergeSort(winRatios)
-for opening_ratio in winRatios:
-    print(f"Opening: {opening_ratio[0]}, Success Ratio: {opening_ratio[1]}")
+
