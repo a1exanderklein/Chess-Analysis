@@ -87,3 +87,4 @@ while notExited:
         print("Bye!")
     else:
         print("Invalid choice. Please enter a valid number.")
+    analyzer.wipe()

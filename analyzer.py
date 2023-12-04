@@ -13,6 +13,14 @@ class ChessAnalyzer:
         self.winRatios2 = []
         self.playerOpeningUsage = {}
 
+    def wipe(self):
+        self.eloData = []
+        self.eloData2 = []
+        self.openingData = []
+        self.playerData = {}
+        self.winRatios = []
+        self.winRatios2 = []
+        self.playerOpeningUsage = {}
     def printer(self):
         for opening_ratio in self.winRatios:
             print(f"Opening: {opening_ratio[0]}, Success Ratio: {opening_ratio[1]}")
