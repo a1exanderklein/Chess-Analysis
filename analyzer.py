@@ -56,7 +56,7 @@ class ChessAnalyzer:
                 if any(mode in gameMode for mode in self.selectedModes):
                     result = row['Result']
                     playerName = row['White']
-                    playerELO = row['WhileElo']
+                    playerELO = row['WhiteElo']
                     #check if the player is already in the list
                     found = False
                     for openingVector in self.openingData:
@@ -70,11 +70,6 @@ class ChessAnalyzer:
                     #if opening not in list, add with initial counts based on the result
                     if not found:
                         self.playerData.append([playerName, playerELO, 1 if result == '1-0' else 0])
-            for openingStats in self.PlayerData:
-                name, occurrences, wins = openingStats #what is in the lists in the opening data list
-                if occurrences > 25: #only if it occurs over 25 to eliminate noise of 100% success rates in few games
-                    successRatio = wins / occurrences if occurrences > 0 else 0
-                    self.winRatios.append([name, successRatio])
 
     #Referenced from DSA Module 6 - Sorting by Amanpreet Kapoor
     #Time - Worst O(N^2)
@@ -133,3 +128,17 @@ class ChessAnalyzer:
                     arr[i] = right[r]
                     i = i + 1
                     r = r + 1
+
+    # def openingPrinter(self, num):
+    #     self.winRatios.reverse()
+    #     for index, pair in enumerate(self.winRatios[:num], start=1):
+    #         print(f"{index}. {pair[0]} | Success Ratio: {round(pair[1] * 100, 2)}%")
+    #     print()
+
+    def openingPrinter(self, num):
+        self.winRatios.reverse()
+        for index, pair in enumerate(self.winRatios[:num], start=1):
+            opening_name = pair[0]
+            success_ratio = round(pair[1] * 100, 2)
+            print(f"{index}. {opening_name.ljust(50)} | Success Ratio: {success_ratio}%")
+        print()

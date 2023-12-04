@@ -33,7 +33,7 @@ while notExited:
             selectedInput = True
         elif inputMode == '4':
             selectedModes = ['Rated Blitz game', 'Rated Blitz tournament','Rated Rapid game', 'Rated Rapid tournament','Rated Classical game','Rated Classical tournament']
-            mode = "All modes"
+            mode = "All"
             selectedInput = True
         else:
             print("Invalid choice. Please enter a valid number.")
@@ -47,25 +47,30 @@ while notExited:
         inputQuery = input("Enter your Choice: ")
         if inputQuery == '1':
             print(f"Gathering Data from {mode} mode...\n")
-            print("Sorting Opening data...\n")
             selectedQuery = True
             analyzer.openingAnalyzer()
+            print("How many of the most successful openings would you like to see?")
+            numOpenings = input("Enter a numeric value: ")
+            print(f"Sorting Opening data for the {numOpenings} most successful openings...\n")
+
+            start = time.time()
+            analyzer.mergeSort(analyzer.winRatios)
+            end = time.time()
+            print(f"Merge sort completed in {end-start} seconds")
+
+            analyzer.openingPrinter(int(numOpenings))
+
         elif inputQuery == '2':
             print(f"Gathering Data from {mode} mode...\n")
             print("Sorting Player data...\n")
-            analyzer.playerAnalyzer()
             selectedQuery = True
+            analyzer.playerAnalyzer()
         elif inputQuery == '3':
             notExited = False
             selectedQuery = True
             print("Bye!")
         else:
             print("Invalid choice. Please enter a valid number.")
-
-   
-    analyzer.winRateAnalyzer()
-
-
 
     # Ask which sorting method they want to use
     # print("Which sorting method would you like to use?\n(1) Merge Sort\n(2) Quick Sort")
