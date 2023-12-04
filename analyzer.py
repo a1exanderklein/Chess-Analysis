@@ -5,6 +5,7 @@ class ChessAnalyzer:
         self.csvFile = 'sep.csv'
         self.selectedModes = selectedModes if selectedModes is not None else []
         self.mode = ""
+        self.eloData = []
         self.openingData = []
         self.playerData = {}
         self.winRatios = []
@@ -13,6 +14,28 @@ class ChessAnalyzer:
     def printer(self):
         for opening_ratio in self.winRatios:
             print(f"Opening: {opening_ratio[0]}, Success Ratio: {opening_ratio[1]}")
+
+    def eloAnalyzer(self):
+        with open(self.csvFile, newline='') as csvfile:
+            #creates csv manager for traversing rows
+            csvReader = csv.DictReader(csvfile)
+            #iterate through each row in the CSV
+            for row in csvReader:
+                gameMode = row['Event']
+                whitePlayerName = row['White']
+                blackPlayerName = row['Black']
+                whitePlayerElo = row['WhiteElo']
+                blackPlayerElo = row['BlackElo']
+                whiteRatingDiff = row['WhiteRatingDiff']
+                opening = row['Opening']
+                result = row['Result']
+
+                whitePlayerElo = int(whitePlayerElo) if whitePlayerElo.isdigit() else None
+                blackPlayerElo = int(blackPlayerElo) if blackPlayerElo.isdigit() else None
+
+                # Append data to eloData list
+                self.eloData.append([opening, whitePlayerElo, blackPlayerElo, whiteRatingDiff, result])
+                
 
     def openingAnalyzer(self):
         with open(self.csvFile, newline='') as csvfile:
