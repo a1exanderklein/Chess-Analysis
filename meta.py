@@ -141,7 +141,7 @@ while chosenSort != '1' or chosenSort != '2':
         mergeSort(winRatios)
         end = time.time()
         print(f"Merge sort from {mode} completed in {end-start} seconds")
-    else if chosenSort == '2':
+    elif chosenSort == '2':
         start = time.time()
         quickSort(winRatios)
         end = time.time()
