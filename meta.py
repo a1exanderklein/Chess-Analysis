@@ -10,11 +10,12 @@ csvFile = 'sep.csv'
 print("Welcome to the Chess Meta Analyzer!")
 print("What game mode would you like to analyze?\n(1) Blitz\n(2) Rapid\n(3) Classical\n(4) All Modes")
 
-inputMode = input("Enter your choice: ")
+inputMode = '0'
 selectedModes = []
 mode = ""
 #process user input
-while inputMode != '1' or inputMode != '2' or inputMode != '3' or inputMode != '4':
+while inputMode == '0':
+    inputMode = input("Enter your choice: ")
     if inputMode == '1':
         selectedModes = ['Rated Blitz game', 'Rated Blitz tournament']
         print("Gathering Data from Rated Blitz mode...")
@@ -133,9 +134,10 @@ def mergeSort(arr):
 
 # Ask which sorting method they want to use
 print("Which sorting method would you like to use?\n(1) Merge Sort\n(2) Quick Sort")
-chosenSort = input("Enter your choice: ")
+chosenSort = '0'
 
-while chosenSort != '1' or chosenSort != '2':
+while chosenSort == '0':
+    chosenSort = input("Enter your choice: ")
     if chosenSort == '1':
         start = time.time()
         mergeSort(winRatios)
@@ -143,11 +145,11 @@ while chosenSort != '1' or chosenSort != '2':
         print(f"Merge sort from {mode} completed in {end-start} seconds")
     elif chosenSort == '2':
         start = time.time()
-        quickSort(winRatios)
+        quickSort(winRatios, 0, len(winRatios) - 1)
         end = time.time()
         print(f"Quick sort from {mode} completed in {end-start} seconds")
 
 # quickSort(winRatios, 0, len(winRatios) - 1)
 
-for opening_ratio in winRatios:
-    print(f"Opening: {opening_ratio[0]}, Success Ratio: {opening_ratio[1]}")
+# for opening_ratio in winRatios:
+#     print(f"Opening: {opening_ratio[0]}, Success Ratio: {opening_ratio[1]}")
