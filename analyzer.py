@@ -9,11 +9,11 @@ class ChessAnalyzer:
         self.winRatios = []
 
     def printer(self):
-        for opening_ratio in self.openingData:
+        for opening_ratio in self.winRatios:
             print(f"Opening: {opening_ratio[0]}, Success Ratio: {opening_ratio[1]}")
 
-    def openingAnalyzer(self, csvFile):
-        with open(csvFile, newline='') as csvfile:
+    def openingAnalyzer(self):
+        with open(self.csvFile, newline='') as csvfile:
             #creates csv manager for traversing rows
             csvReader = csv.DictReader(csvfile)
             #iterate through each row in the CSV

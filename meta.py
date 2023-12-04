@@ -36,6 +36,8 @@ while inputMode == '0':
         print("Invalid choice. Please enter a valid number.")
 
 analyzer = ChessAnalyzer(selectedModes=selectedModes)
+analyzer.openingAnalyzer()
+analyzer.winRateAnalyzer()
 
 # Ask which sorting method they want to use
 print("Which sorting method would you like to use?\n(1) Merge Sort\n(2) Quick Sort")
@@ -45,12 +47,12 @@ while chosenSort == '0':
     chosenSort = input("Enter your choice: ")
     if chosenSort == '1':
         start = time.time()
-        analyzer.mergeSort(winRatios)
+        analyzer.mergeSort(analyzer.winRatios)
         end = time.time()
         print(f"Merge sort from {mode} completed in {end-start} seconds")
     elif chosenSort == '2':
         start = time.time()
-        analyzer.quickSort(winRatios, 0, len(winRatios) - 1)
+        analyzer.quickSort(analyzer.winRatios, 0, len(analyzer.winRatios) - 1)
         end = time.time()
         print(f"Quick sort from {mode} completed in {end-start} seconds")
     else:
