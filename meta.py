@@ -1,6 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import csv
+import time
 
 csvFile = 'sep.csv'
 # chess_dataframe = pd.read_csv(csvFile, delimiter=",", header= 0)
@@ -11,21 +12,27 @@ print("What game mode would you like to analyze?\n(1) Blitz\n(2) Rapid\n(3) Clas
 
 inputMode = input("Enter your choice: ")
 selectedModes = []
+mode = ""
 #process user input
-if inputMode == '1':
-    selectedModes = ['Rated Blitz game', 'Rated Blitz tournament']
-    print("Gathering Data from Rated Blitz mode...")
-elif inputMode == '2':
-    selectedModes = ['Rated Rapid game', 'Rated Rapid tournament']
-    print("Gathering Data from Rated Rapid mode...")
-elif inputMode == '3':
-    selectedModes = ['Rated Classical game','Rated Classical tournament']
-    print("Gathering Data from Rated Classical mode...")
-elif inputMode == '4':
-    selectedModes = ['Rated Blitz game', 'Rated Blitz tournament','Rated Rapid game', 'Rated Rapid tournament','Rated Classical game','Rated Classical tournament']
-    print("Gathering Data from All Modes...")
-else:
-    print("Invalid choice. Please enter a valid game mode.")
+while inputMode != '1' or inputMode != '2' or inputMode != '3' or inputMode != '4':
+    if inputMode == '1':
+        selectedModes = ['Rated Blitz game', 'Rated Blitz tournament']
+        print("Gathering Data from Rated Blitz mode...")
+        mode = "Blitz mode"
+    elif inputMode == '2':
+        selectedModes = ['Rated Rapid game', 'Rated Rapid tournament']
+        print("Gathering Data from Rated Rapid mode...")
+        mode = "Rapid mode"
+    elif inputMode == '3':
+        selectedModes = ['Rated Classical game','Rated Classical tournament']
+        print("Gathering Data from Rated Classical mode...")
+        mode = "Classical mode"
+    elif inputMode == '4':
+        selectedModes = ['Rated Blitz game', 'Rated Blitz tournament','Rated Rapid game', 'Rated Rapid tournament','Rated Classical game','Rated Classical tournament']
+        print("Gathering Data from All Modes...")
+        mode = "All modes"
+    else:
+        print("Invalid choice. Please enter a valid game mode.")
 
 
 openingData = [] #list of pairs (Opening, # of Occurrences, # of Wins)
@@ -38,21 +45,23 @@ with open(csvFile, newline='') as csvfile:
         if any(mode in gameMode for mode in selectedModes):
             result = row['Result']
             openingName = row['Opening']
-            #check if the opening is already in the list
-            found = False
-            for openingVector in openingData:
-                if openingVector[0] == openingName:
-                    #increment occurrences count
-                    openingVector[1] += 1
-                    #check if game result is a win (1-0)
-                    if result == '1-0':
-                        openingVector[2] += 1
-                    found = True
-                    break
+            #do not account for openings with the '?'
+            if openingName != "?":
+                #check if the opening is already in the list
+                found = False
+                for openingVector in openingData:
+                    if openingVector[0] == openingName:
+                        #increment occurrences count
+                        openingVector[1] += 1
+                        #check if game result is a win (1-0)
+                        if result == '1-0':
+                            openingVector[2] += 1
+                        found = True
+                        break
 
-            #if opening not in list, add with initial counts based on the result
-            if not found:
-                openingData.append([openingName, 1, 1 if result == '1-0' else 0])
+                #if opening not in list, add with initial counts based on the result
+                if not found:
+                    openingData.append([openingName, 1, 1 if result == '1-0' else 0])
 
 #create separate list for win rates
 winRatios = []
@@ -91,6 +100,7 @@ def partition(arr, low, high):
     return down #return pivot index after partition
 
 def mergeSort(arr):
+   
     if len(arr) > 1:
         middle = len(arr)//2
         left = arr[0:middle]
@@ -119,8 +129,25 @@ def mergeSort(arr):
                 arr[i] = right[r]
                 i = i + 1
                 r = r + 1
-    return arr
+
+
+# Ask which sorting method they want to use
+print("Which sorting method would you like to use?\n(1) Merge Sort\n(2) Quick Sort")
+chosenSort = input("Enter your choice: ")
+
+while chosenSort != '1' or chosenSort != '2':
+    if chosenSort == '1':
+        start = time.time()
+        mergeSort(winRatios)
+        end = time.time()
+        print(f"Merge sort from {mode} completed in {end-start} seconds")
+    elif chosenSort == '2':
+        start = time.time()
+        quickSort(winRatios)
+        end = time.time()
+        print(f"Quick sort from {mode} completed in {end-start} seconds")
 
 # quickSort(winRatios, 0, len(winRatios) - 1)
-mergeSort(winRatios)
 
+for opening_ratio in winRatios:
+    print(f"Opening: {opening_ratio[0]}, Success Ratio: {opening_ratio[1]}")
