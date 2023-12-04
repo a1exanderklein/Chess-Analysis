@@ -75,13 +75,10 @@ while notExited:
         else:
             print("Invalid choice. Please enter a valid number.")
 
-<<<<<<< HEAD
    
 
 
 
-=======
->>>>>>> 8d7bdbbeb5e81452a38e88137904e6ce59a92183
     # Ask which sorting method they want to use
     # print("Which sorting method would you like to use?\n(1) Merge Sort\n(2) Quick Sort")
     # chosenSort = '0'
