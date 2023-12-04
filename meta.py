@@ -42,7 +42,7 @@ while notExited:
     analyzer = ChessAnalyzer(selectedModes=selectedModes)
 
     selectedQuery = False
-    print("What data would you like to analyze?\n(1) Opening data\n(2) Player data\n(4) Highest Ranked Games(3) Exit Analyzer")
+    print("What data would you like to analyze?\n(1) Opening data\n(2) Player data\n(3) Highest Ranked Games\n(4) Exit Analyzer")
     while selectedQuery == False:
         inputQuery = input("Enter your Choice: ")
         if inputQuery == '1':
@@ -68,7 +68,7 @@ while notExited:
             analyzer.getPlayerOpeningUsage(name)
             selectedQuery = True
             analyzer.playerAnalyzer()
-        elif inputQuery == '3':
+        elif inputQuery == '4':
             notExited = False
             selectedQuery = True
             print("Bye!")
