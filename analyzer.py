@@ -6,6 +6,7 @@ class ChessAnalyzer:
         self.selectedModes = selectedModes if selectedModes is not None else []
         self.mode = ""
         self.openingData = []
+        self.playerData = []
         self.winRatios = []
 
     def printer(self):
@@ -39,6 +40,31 @@ class ChessAnalyzer:
                         #if opening not in list, add with initial counts based on the result
                         if not found:
                             self.openingData.append([openingName, 1, 1 if result == '1-0' else 0])
+
+    def playerAnalyzer(self):
+        with open(self.csvFile, newline='') as csvfile:
+            #creates csv manager for traversing rows
+            csvReader = csv.DictReader(csvfile)
+            #iterate through each row in the CSV
+            for row in csvReader:
+                gameMode = row['Event']
+                if any(mode in gameMode for mode in self.selectedModes):
+                    result = row['Result']
+                    playerName = row['White']
+                    playerELO = row['WhileElo']
+                    #check if the player is already in the list
+                    found = False
+                    for openingVector in self.openingData:
+                        if openingVector[0] == playerName:
+                            #check if game result is a win (1-0)
+                            if result == '1-0':
+                                openingVector[2] += 1
+                            found = True
+                            break
+
+                    #if opening not in list, add with initial counts based on the result
+                    if not found:
+                        self.playerData.append([playerName, playerELO, 1 if result == '1-0' else 0])
 
     def winRateAnalyzer(self):
         for openingStats in self.openingData:
