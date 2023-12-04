@@ -147,3 +147,17 @@ class ChessAnalyzer:
                     arr[i] = right[r]
                     i = i + 1
                     r = r + 1
+
+    # def openingPrinter(self, num):
+    #     self.winRatios.reverse()
+    #     for index, pair in enumerate(self.winRatios[:num], start=1):
+    #         print(f"{index}. {pair[0]} | Success Ratio: {round(pair[1] * 100, 2)}%")
+    #     print()
+
+    def openingPrinter(self, num):
+        self.winRatios.reverse()
+        for index, pair in enumerate(self.winRatios[:num], start=1):
+            opening_name = pair[0]
+            success_ratio = round(pair[1] * 100, 2)
+            print(f"{index}. {opening_name.ljust(50)} | Success Ratio: {success_ratio}%")
+        print()
