@@ -16,43 +16,53 @@ while notExited:
     selectedModes = []
     mode = ""
     #process user input
-    while inputMode == '0':
+    selectedInput = False
+    while selectedInput == False:
         inputMode = input("Enter your choice: ")
         if inputMode == '1':
             selectedModes = ['Rated Blitz game', 'Rated Blitz tournament']
+            selectedInput = True
             mode = "Blitz mode"
         elif inputMode == '2':
             selectedModes = ['Rated Rapid game', 'Rated Rapid tournament']
             mode = "Rapid mode"
+            selectedInput = True
         elif inputMode == '3':
             selectedModes = ['Rated Classical game','Rated Classical tournament']
             mode = "Classical mode"
+            selectedInput = True
         elif inputMode == '4':
             selectedModes = ['Rated Blitz game', 'Rated Blitz tournament','Rated Rapid game', 'Rated Rapid tournament','Rated Classical game','Rated Classical tournament']
             mode = "All modes"
+            selectedInput = True
         else:
-            print("Invalid choice. Please enter a valid number.\n")
+            print("Invalid choice. Please enter a valid number.")
 
 
     analyzer = ChessAnalyzer(selectedModes=selectedModes)
 
-    inputQuery = '0'
-    print("What data would you like to analyze?\n(1) Opening data\n(2) Player data\n(3) Exit Analyzer")
-    while inputQuery == '0':
+    selectedQuery = False
+    print("What data would you like to analyze?\n(1) Opening win rate data\n(2) Player win rate data\n(3) Exit Analyzer")
+    while selectedQuery == False:
         inputQuery = input("Enter your Choice: ")
         if inputQuery == '1':
             print(f"Gathering Data from {mode} mode...\n")
             print("Sorting Opening data...\n")
+            selectedQuery = True
+            analyzer.openingAnalyzer()
         elif inputQuery == '2':
             print(f"Gathering Data from {mode} mode...\n")
             print("Sorting Player data...\n")
+            analyzer.playerAnalyzer()
+            selectedQuery = True
         elif inputQuery == '3':
             notExited = False
-            print("Bye")
+            selectedQuery = True
+            print("Bye!")
         else:
-            print("Invalid choice. Please enter a valid number.\n")
+            print("Invalid choice. Please enter a valid number.")
 
-    analyzer.openingAnalyzer()
+   
     analyzer.winRateAnalyzer()
 
 

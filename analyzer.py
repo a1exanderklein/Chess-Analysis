@@ -40,6 +40,11 @@ class ChessAnalyzer:
                         #if opening not in list, add with initial counts based on the result
                         if not found:
                             self.openingData.append([openingName, 1, 1 if result == '1-0' else 0])
+            for openingStats in self.openingData:
+                name, occurrences, wins = openingStats #what is in the lists in the opening data list
+                if occurrences > 25: #only if it occurs over 25 to eliminate noise of 100% success rates in few games
+                    successRatio = wins / occurrences if occurrences > 0 else 0
+                    self.winRatios.append([name, successRatio])
 
     def playerAnalyzer(self):
         with open(self.csvFile, newline='') as csvfile:
@@ -65,13 +70,11 @@ class ChessAnalyzer:
                     #if opening not in list, add with initial counts based on the result
                     if not found:
                         self.playerData.append([playerName, playerELO, 1 if result == '1-0' else 0])
-
-    def winRateAnalyzer(self):
-        for openingStats in self.openingData:
-            name, occurrences, wins = openingStats #what is in the lists in the opening data list
-            if occurrences > 25: #only if it occurs over 25 to eliminate noise of 100% success rates in few games
-                successRatio = wins / occurrences if occurrences > 0 else 0
-                self.winRatios.append([name, successRatio])
+            for openingStats in self.PlayerData:
+                name, occurrences, wins = openingStats #what is in the lists in the opening data list
+                if occurrences > 25: #only if it occurs over 25 to eliminate noise of 100% success rates in few games
+                    successRatio = wins / occurrences if occurrences > 0 else 0
+                    self.winRatios.append([name, successRatio])
 
     #Referenced from DSA Module 6 - Sorting by Amanpreet Kapoor
     #Time - Worst O(N^2)
