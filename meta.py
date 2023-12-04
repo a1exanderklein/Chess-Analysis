@@ -101,7 +101,7 @@ def mergeSort(arr):
         r = 0
         i = 0
         while l < len(left) and r < len(right):
-            if left[l] > right[r]:
+            if left[l][1] > right[r][1]:
                 arr[i] = right[r]
                 r = r + 1
                 i = i + 1
