@@ -36,46 +36,50 @@ while inputMode != '1' or inputMode != '2' or inputMode != '3' or inputMode != '
 
 
 openingData = [] #list of pairs (Opening, # of Occurrences, # of Wins)
-with open(csvFile, newline='') as csvfile:
-    #creates csv manager for traversing rows
-    csvReader = csv.DictReader(csvfile)
-    #iterate through each row in the CSV
-    for row in csvReader:
-        gameMode = row['Event']
-        if any(mode in gameMode for mode in selectedModes):
-            result = row['Result']
-            openingName = row['Opening']
-            #do not account for openings with the '?'
-            if openingName != "?":
-                #check if the opening is already in the list
-                found = False
-                for openingVector in openingData:
-                    if openingVector[0] == openingName:
-                        #increment occurrences count
-                        openingVector[1] += 1
-                        #check if game result is a win (1-0)
-                        if result == '1-0':
-                            openingVector[2] += 1
-                        found = True
-                        break
+def openingAnalyzer(csvFile, openingDataArray):
+    with open(csvFile, newline='') as csvfile:
+        #creates csv manager for traversing rows
+        csvReader = csv.DictReader(csvfile)
+        #iterate through each row in the CSV
+        for row in csvReader:
+            gameMode = row['Event']
+            if any(mode in gameMode for mode in selectedModes):
+                result = row['Result']
+                openingName = row['Opening']
+                #do not account for openings with the '?'
+                if openingName != "?":
+                    #check if the opening is already in the list
+                    found = False
+                    for openingVector in openingDataArray:
+                        if openingVector[0] == openingName:
+                            #increment occurrences count
+                            openingVector[1] += 1
+                            #check if game result is a win (1-0)
+                            if result == '1-0':
+                                openingVector[2] += 1
+                            found = True
+                            break
 
-                #if opening not in list, add with initial counts based on the result
-                if not found:
-                    openingData.append([openingName, 1, 1 if result == '1-0' else 0])
+                    #if opening not in list, add with initial counts based on the result
+                    if not found:
+                        openingDataArray.append([openingName, 1, 1 if result == '1-0' else 0])
 
 #create separate list for win rates
 winRatios = []
-for openingStats in openingData:
-    name, occurrences, wins = openingStats
-    if occurrences > 25:
-        successRatio = wins / occurrences if occurrences > 0 else 0
-        winRatios.append([name, successRatio])
+def winRateAnalyzer(winRatioArray):
+    for openingStats in openingData:
+        name, occurrences, wins = openingStats #what is in the lists in the opening data list
+        if occurrences > 25: #only if it occurs over 25 to eliminate noise of 100% success rates in few games
+            successRatio = wins / occurrences if occurrences > 0 else 0
+            winRatioArray.append([name, successRatio])
 
 def printer(arr):
     for opening_ratio in arr:
         print(f"Opening: {opening_ratio[0]}, Success Ratio: {opening_ratio[1]}")
 
 #Referenced from DSA Module 6 - Sorting by Amanpreet Kapoor
+#Time - Worst O(N^2)
+#Space - O(log n) recursion stack
 def quickSort(arr, low, high):
     #check if sortable
     if low < high:
@@ -99,8 +103,9 @@ def partition(arr, low, high):
     arr[low], arr[down] = arr[down], arr[low] #swap pivot and down
     return down #return pivot index after partition
 
+#Time - Worst O(n log n)
+#Space - O(n)
 def mergeSort(arr):
-   
     if len(arr) > 1:
         middle = len(arr)//2
         left = arr[0:middle]
