@@ -94,6 +94,8 @@ class ChessAnalyzer:
 
 
     def getPlayerOpeningUsage(self, name):
+        if name not in self.playerData:
+            return
         if name not in self.playerOpeningUsage:
             self.playerOpeningUsage[name] = {}
 
@@ -108,9 +110,9 @@ class ChessAnalyzer:
                     self.playerOpeningUsage[name][openingName] += 1
         sorted_openings = sorted(self.playerOpeningUsage[name].items(), key=lambda x: x[1], reverse=True)
         playerStats = self.playerData[name]
-        print(f"{name}: {playerStats['ELO']} ELO, {playerStats['Wins']} Wins")
+        print(f"{name}: {playerStats['ELO']} ELO, {playerStats['Wins']} Wins\n{name}'s top 3 Openings:")
         for i in range(3):
-            print(f"{sorted_openings[i][0]}: Used {sorted_openings[i][1]} times")
+            print(f"   {sorted_openings[i][0]}: Used {sorted_openings[i][1]} times")
 
 
     #Referenced from DSA Module 6 - Sorting by Amanpreet Kapoor
