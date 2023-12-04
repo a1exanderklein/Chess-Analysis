@@ -8,8 +8,8 @@ from analyzer import ChessAnalyzer
 # print(chess_dataframe.head)
 
 notExited = True
+print("Welcome to the Chess Meta Analyzer!")
 while notExited:
-    print("Welcome to the Chess Meta Analyzer!")
     print("What game mode would you like to analyze?\n(1) Blitz\n(2) Rapid\n(3) Classical\n(4) All Modes")
 
     inputMode = '0'
