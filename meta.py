@@ -14,7 +14,7 @@ inputMode = input("Enter your choice: ")
 selectedModes = []
 mode = ""
 #process user input
-while inputMode != '1' || inputMode != '2' || inputMode != '3' || inputMode != '4':
+while inputMode != '1' or inputMode != '2' or inputMode != '3' or inputMode != '4':
     if inputMode == '1':
         selectedModes = ['Rated Blitz game', 'Rated Blitz tournament']
         print("Gathering Data from Rated Blitz mode...")
@@ -135,7 +135,7 @@ def mergeSort(arr):
 print("Which sorting method would you like to use?\n(1) Merge Sort\n(2) Quick Sort")
 chosenSort = input("Enter your choice: ")
 
-while chosenSort != '1' || chosenSort != '2':
+while chosenSort != '1' or chosenSort != '2':
     if chosenSort == '1':
         start = time.time()
         mergeSort(winRatios)
