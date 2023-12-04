@@ -42,7 +42,6 @@ while notExited:
     if inputQuery == '1': #Opening Data
         print("Sorting Opening data (Comparing Merge & Quick Sort)...\n")
         analyzer.openingAnalyzer()
-
         start = time.time()
         analyzer.mergeSort(analyzer.winRatios)
         end = time.time()
@@ -53,6 +52,7 @@ while notExited:
         print(f"Quick sort completed in {round((end-start), 3)} seconds")
         print()
 
+        analyzer.printer()
         print("How many of the most successful openings would you like to see?")
         numOpenings = input("Enter a numeric value: ")
         analyzer.openingPrinter(int(numOpenings))

@@ -18,12 +18,15 @@ class ChessAnalyzer:
             print(f"Opening: {opening_ratio[0]}, Success Ratio: {opening_ratio[1]}")
 
     def eloAnalyzer(self):
+        self.eloData.clear()
+        self.eloData2.clear()
         with open(self.csvFile, newline='') as csvfile:
             #creates csv manager for traversing rows
             csvReader = csv.DictReader(csvfile)
             #iterate through each row in the CSV
             for row in csvReader:
                 gameMode = row['Event']
+                # if gameMode in self.selectedModes:
                 whitePlayerName = row['White']
                 blackPlayerName = row['Black']
                 whitePlayerElo = row['WhiteElo']
@@ -37,9 +40,11 @@ class ChessAnalyzer:
 
                 #add list of data to eloData list
                 self.eloData.append([opening, whitePlayerElo, blackPlayerElo, whitePlayerName, blackPlayerName, whiteRatingDiff, result, gameMode])
-        self.eloData2 = self.eloData   
+        self.eloData2 = self.eloData
 
     def openingAnalyzer(self):
+        self.winRatios = []
+        self.winRatios2 = []
         with open(self.csvFile, newline='') as csvfile:
             #creates csv manager for traversing rows
             csvReader = csv.DictReader(csvfile)
@@ -74,6 +79,8 @@ class ChessAnalyzer:
             self.winRatios2 = self.winRatios
 
     def playerAnalyzer(self):
+        self.playerData = []
+        self.playerData2 = []
         with open(self.csvFile, newline='') as csvfile:
             #creates csv manager for traversing rows
             csvReader = csv.DictReader(csvfile)
@@ -148,24 +155,32 @@ class ChessAnalyzer:
     #Time - Worst O(n log n)
     #Space - O(n)
     def mergeSort(self, arr):
+        #base case, if equal to 1, start combining
         if len(arr) > 1:
+            #divide the array in half and recall merge sort
             middle = len(arr)//2
             left = arr[0:middle]
             right = arr[middle:len(arr)]
             self.mergeSort(left)
             self.mergeSort(right)
+            #after fully separating the initial array, we begin combination
+            #these are the indexes of left, right, and the final array respectively
             l = 0
             r = 0
             i = 0
+            #while there is still values left to be sorted in both the right and left array
             while l < len(left) and r < len(right):
+                #if left is > add right value and increment the final and right index
                 if left[l][1] > right[r][1]:
                     arr[i] = right[r]
                     r = r + 1
                     i = i + 1
+                #otherwise insert the left and increment the left and final index
                 else:
                     arr[i] = left[l]
                     l = l + 1
                     i = i + 1
+            #these if statements check for which array still has values to be inserted
             if l < len(left):
                 while l < len(left):
                     arr[i] = left[l]
@@ -183,7 +198,12 @@ class ChessAnalyzer:
         for index, pair in enumerate(self.winRatios[:num], start=1):
             opening = pair[0]
             success = round(pair[1] * 100, 2)
-            print(f"{index}. {opening.ljust(50)} | Success Ratio: {success}%")
+            if (index > 99):
+                print(f"{index}. {opening.ljust(63)} | Success Ratio: {success}%")
+            elif (index > 9):
+                print(f"{index}. {opening.ljust(64)} | Success Ratio: {success}%")
+            else:
+                print(f"{index}. {opening.ljust(65)} | Success Ratio: {success}%")
         print()
 
     def eloPrinter(self, num):
