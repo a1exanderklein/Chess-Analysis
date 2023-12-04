@@ -12,21 +12,27 @@ print("What game mode would you like to analyze?\n(1) Blitz\n(2) Rapid\n(3) Clas
 
 inputMode = input("Enter your choice: ")
 selectedModes = []
+mode = ""
 #process user input
-if inputMode == '1':
-    selectedModes = ['Rated Blitz game', 'Rated Blitz tournament']
-    print("Gathering Data from Rated Blitz mode...")
-elif inputMode == '2':
-    selectedModes = ['Rated Rapid game', 'Rated Rapid tournament']
-    print("Gathering Data from Rated Rapid mode...")
-elif inputMode == '3':
-    selectedModes = ['Rated Classical game','Rated Classical tournament']
-    print("Gathering Data from Rated Classical mode...")
-elif inputMode == '4':
-    selectedModes = ['Rated Blitz game', 'Rated Blitz tournament','Rated Rapid game', 'Rated Rapid tournament','Rated Classical game','Rated Classical tournament']
-    print("Gathering Data from All Modes...")
-else:
-    print("Invalid choice. Please enter a valid game mode.")
+while inputMode != '1' || inputMode != '2' || inputMode != '3' || inputMode != '4':
+    if inputMode == '1':
+        selectedModes = ['Rated Blitz game', 'Rated Blitz tournament']
+        print("Gathering Data from Rated Blitz mode...")
+        mode = "Blitz mode"
+    elif inputMode == '2':
+        selectedModes = ['Rated Rapid game', 'Rated Rapid tournament']
+        print("Gathering Data from Rated Rapid mode...")
+        mode = "Rapid mode"
+    elif inputMode == '3':
+        selectedModes = ['Rated Classical game','Rated Classical tournament']
+        print("Gathering Data from Rated Classical mode...")
+        mode = "Classical mode"
+    elif inputMode == '4':
+        selectedModes = ['Rated Blitz game', 'Rated Blitz tournament','Rated Rapid game', 'Rated Rapid tournament','Rated Classical game','Rated Classical tournament']
+        print("Gathering Data from All Modes...")
+        mode = "All modes"
+    else:
+        print("Invalid choice. Please enter a valid game mode.")
 
 
 openingData = [] #list of pairs (Opening, # of Occurrences, # of Wins)
@@ -124,12 +130,24 @@ def mergeSort(arr):
                 i = i + 1
                 r = r + 1
 
-    
+
+# Ask which sorting method they want to use
+print("Which sorting method would you like to use?\n(1) Merge Sort\n(2) Quick Sort")
+chosenSort = input("Enter your choice: ")
+
+while chosenSort != '1' || chosenSort != '2':
+    if chosenSort == '1':
+        start = time.time()
+        mergeSort(winRatios)
+        end = time.time()
+        print(f"Merge sort from {mode} completed in {end-start} seconds")
+    else if chosenSort == '2':
+        start = time.time()
+        quickSort(winRatios)
+        end = time.time()
+        print(f"Quick sort from {mode} completed in {end-start} seconds")
 
 # quickSort(winRatios, 0, len(winRatios) - 1)
-start = time.time()
-mergeSort(winRatios)
-end = time.time()
-print(f"{end-start} time elapsed")
+
 for opening_ratio in winRatios:
     print(f"Opening: {opening_ratio[0]}, Success Ratio: {opening_ratio[1]}")
