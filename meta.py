@@ -67,7 +67,6 @@ while notExited:
             name = input ("Enter name of player: ")
             analyzer.getPlayerOpeningUsage(name)
             selectedQuery = True
-            analyzer.playerAnalyzer()
         elif inputQuery == '4':
             notExited = False
             selectedQuery = True
