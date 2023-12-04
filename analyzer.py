@@ -6,6 +6,7 @@ class ChessAnalyzer:
         self.selectedModes = selectedModes if selectedModes is not None else []
         self.mode = ""
         self.eloData = []
+        self.eloData2 = []
         self.openingData = []
         self.playerData = {}
         self.winRatios = []
@@ -35,6 +36,7 @@ class ChessAnalyzer:
 
                 # Append data to eloData list
                 self.eloData.append([opening, whitePlayerElo, blackPlayerElo, whiteRatingDiff, result])
+            self.eloData2 = self.eloData
                 
 
     def openingAnalyzer(self):
