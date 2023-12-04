@@ -1,6 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import csv
+import time
 
 csvFile = 'sep.csv'
 # chess_dataframe = pd.read_csv(csvFile, delimiter=",", header= 0)
@@ -38,21 +39,23 @@ with open(csvFile, newline='') as csvfile:
         if any(mode in gameMode for mode in selectedModes):
             result = row['Result']
             openingName = row['Opening']
-            #check if the opening is already in the list
-            found = False
-            for openingVector in openingData:
-                if openingVector[0] == openingName:
-                    #increment occurrences count
-                    openingVector[1] += 1
-                    #check if game result is a win (1-0)
-                    if result == '1-0':
-                        openingVector[2] += 1
-                    found = True
-                    break
+            #do not account for openings with the '?'
+            if openingName != "?":
+                #check if the opening is already in the list
+                found = False
+                for openingVector in openingData:
+                    if openingVector[0] == openingName:
+                        #increment occurrences count
+                        openingVector[1] += 1
+                        #check if game result is a win (1-0)
+                        if result == '1-0':
+                            openingVector[2] += 1
+                        found = True
+                        break
 
-            #if opening not in list, add with initial counts based on the result
-            if not found:
-                openingData.append([openingName, 1, 1 if result == '1-0' else 0])
+                #if opening not in list, add with initial counts based on the result
+                if not found:
+                    openingData.append([openingName, 1, 1 if result == '1-0' else 0])
 
 #create separate list for win rates
 winRatios = []
@@ -91,6 +94,7 @@ def partition(arr, low, high):
     return down
 
 def mergeSort(arr):
+   
     if len(arr) > 1:
         middle = len(arr)//2
         left = arr[0:middle]
@@ -119,9 +123,13 @@ def mergeSort(arr):
                 arr[i] = right[r]
                 i = i + 1
                 r = r + 1
-    return arr
+
+    
 
 # quickSort(winRatios, 0, len(winRatios) - 1)
+start = time.time()
 mergeSort(winRatios)
+end = time.time()
+print(f"{end-start} time elapsed")
 for opening_ratio in winRatios:
     print(f"Opening: {opening_ratio[0]}, Success Ratio: {opening_ratio[1]}")
