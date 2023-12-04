@@ -6,6 +6,7 @@ class ChessAnalyzer:
         self.selectedModes = selectedModes if selectedModes is not None else []
         self.mode = ""
         self.eloData = []
+        self.eloData2 = []
         self.openingData = []
         self.playerData = {}
         self.winRatios = []
@@ -34,9 +35,9 @@ class ChessAnalyzer:
                 whitePlayerElo = int(whitePlayerElo) if whitePlayerElo.isdigit() else None
                 blackPlayerElo = int(blackPlayerElo) if blackPlayerElo.isdigit() else None
 
-                # Append data to eloData list
-                self.eloData.append([opening, whitePlayerElo, blackPlayerElo, whiteRatingDiff, result])
-                
+                #add list of data to eloData list
+                self.eloData.append([opening, whitePlayerElo, blackPlayerElo, whitePlayerName, blackPlayerName, whiteRatingDiff, result, gameMode])
+        self.eloData2 = self.eloData   
 
     def openingAnalyzer(self):
         with open(self.csvFile, newline='') as csvfile:
@@ -87,13 +88,14 @@ class ChessAnalyzer:
                         # Initialize player data in dictionary if not already present
                     if playerName not in self.playerData:
                         self.playerData[playerName] = {'ELO': playerELO, 'Occurrences': 0, 'Wins': 0}
-                    # Update occurrences
+                    #increment occurrences
                     self.playerData[playerName]['Occurrences'] += 1
-                    # Check if game result is a win (1-0) and update wins
+                    #if result is a win (1-0) increment wins
                     if result == '1-0':
                         self.playerData[playerName]['Wins'] += 1
-
-
+                    #if found elo > current recorded elo
+                    if playerELO > self.playerData[playerName]['ELO']:
+                        self.playerData[playerName]['ELO'] = playerELO
 
     def getPlayerOpeningUsage(self, name):
         if name not in self.playerData:
@@ -115,7 +117,6 @@ class ChessAnalyzer:
         print(f"{name}: {playerStats['ELO']} ELO, {playerStats['Wins']} Wins\n{name}'s top 3 Openings:")
         for i in range(3):
             print(f"   {sorted_openings[i][0]}: Used {sorted_openings[i][1]} times")
-
 
     #Referenced from DSA Module 6 - Sorting by Amanpreet Kapoor
     #Time - Worst O(N^2)
@@ -177,16 +178,27 @@ class ChessAnalyzer:
                     r = r + 1
         return arr
 
-    # def openingPrinter(self, num):
-    #     self.winRatios.reverse()
-    #     for index, pair in enumerate(self.winRatios[:num], start=1):
-    #         print(f"{index}. {pair[0]} | Success Ratio: {round(pair[1] * 100, 2)}%")
-    #     print()
-
     def openingPrinter(self, num):
         self.winRatios.reverse()
         for index, pair in enumerate(self.winRatios[:num], start=1):
-            opening_name = pair[0]
-            success_ratio = round(pair[1] * 100, 2)
-            print(f"{index}. {opening_name.ljust(50)} | Success Ratio: {success_ratio}%")
+            opening = pair[0]
+            success = round(pair[1] * 100, 2)
+            print(f"{index}. {opening.ljust(50)} | Success Ratio: {success}%")
         print()
+
+    def eloPrinter(self, num):
+        self.eloData.reverse()
+        for index, group in enumerate(self.eloData[:num], start=1):
+            opening = group[0]
+            whitePlayerElo = group[1]
+            blackPlayerElo = group[2]
+            whitePlayerName = group[3]
+            blackPlayerName = group[4]
+            whiteRatingDiff = group[5]
+            result = group[6]
+            print(f"{index}. {whitePlayerName} vs. {blackPlayerName}")
+            print(f"    {whitePlayerName} Elo: {whitePlayerElo} | {blackPlayerName} Elo: {blackPlayerElo} | White Differential: {whiteRatingDiff}")
+            print(f"    Opening: {opening}")
+            print(f"    Result: {result}")
+        print()
+        
