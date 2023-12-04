@@ -33,7 +33,7 @@ while inputMode == '0':
         print("Gathering Data from All Modes...")
         mode = "All modes"
     else:
-        print("Invalid choice. Please enter a valid game mode.")
+        print("Invalid choice. Please enter a valid number.")
 
 
 openingData = [] #list of pairs (Opening, # of Occurrences, # of Wins)
@@ -148,6 +148,8 @@ while chosenSort == '0':
         quickSort(winRatios, 0, len(winRatios) - 1)
         end = time.time()
         print(f"Quick sort from {mode} completed in {end-start} seconds")
+    else:
+         print("Invalid choice. Please enter a valid number.")
 
 # quickSort(winRatios, 0, len(winRatios) - 1)
 
