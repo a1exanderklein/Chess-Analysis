@@ -21,13 +21,12 @@ class ChessAnalyzer:
         self.winRatios = []
         self.winRatios2 = []
         self.playerOpeningUsage = {}
+
     def printer(self):
         for opening_ratio in self.winRatios:
             print(f"Opening: {opening_ratio[0]}, Success Ratio: {opening_ratio[1]}")
 
-    def eloAnalyzer(self):
-        self.eloData.clear()
-        self.eloData2.clear()
+    def eloAnalyzer(self, all):
         with open(self.csvFile, newline='') as csvfile:
             #creates csv manager for traversing rows
             csvReader = csv.DictReader(csvfile)
@@ -35,24 +34,38 @@ class ChessAnalyzer:
             for row in csvReader:
                 gameMode = row['Event']
                 # if gameMode in self.selectedModes:
-                whitePlayerName = row['White']
-                blackPlayerName = row['Black']
-                whitePlayerElo = row['WhiteElo']
-                blackPlayerElo = row['BlackElo']
-                whiteRatingDiff = row['WhiteRatingDiff']
-                opening = row['Opening']
-                result = row['Result']
+                if all:
+                    whitePlayerName = row['White']
+                    blackPlayerName = row['Black']
+                    whitePlayerElo = row['WhiteElo']
+                    blackPlayerElo = row['BlackElo']
+                    whiteRatingDiff = row['WhiteRatingDiff']
+                    opening = row['Opening']
+                    result = row['Result']
 
-                whitePlayerElo = int(whitePlayerElo) if whitePlayerElo.isdigit() else None
-                blackPlayerElo = int(blackPlayerElo) if blackPlayerElo.isdigit() else None
+                    whitePlayerElo = int(whitePlayerElo) if whitePlayerElo.isdigit() else None
+                    blackPlayerElo = int(blackPlayerElo) if blackPlayerElo.isdigit() else None
 
-                #add list of data to eloData list
-                self.eloData.append([opening, whitePlayerElo, blackPlayerElo, whitePlayerName, blackPlayerName, whiteRatingDiff, result, gameMode])
+                    #add list of data to eloData list
+                    self.eloData.append([opening, whitePlayerElo, blackPlayerElo, whitePlayerName, blackPlayerName, whiteRatingDiff, result, gameMode])
+                else:
+                    if gameMode in self.selectedModes:
+                        whitePlayerName = row['White']
+                        blackPlayerName = row['Black']
+                        whitePlayerElo = row['WhiteElo']
+                        blackPlayerElo = row['BlackElo']
+                        whiteRatingDiff = row['WhiteRatingDiff']
+                        opening = row['Opening']
+                        result = row['Result']
+
+                        whitePlayerElo = int(whitePlayerElo) if whitePlayerElo.isdigit() else None
+                        blackPlayerElo = int(blackPlayerElo) if blackPlayerElo.isdigit() else None
+
+                        #add list of data to eloData list
+                        self.eloData.append([opening, whitePlayerElo, blackPlayerElo, whitePlayerName, blackPlayerName, whiteRatingDiff, result, gameMode])
         self.eloData2 = self.eloData
 
     def openingAnalyzer(self):
-        self.winRatios = []
-        self.winRatios2 = []
         with open(self.csvFile, newline='') as csvfile:
             #creates csv manager for traversing rows
             csvReader = csv.DictReader(csvfile)
@@ -81,14 +94,12 @@ class ChessAnalyzer:
                             self.openingData.append([openingName, 1, 1 if result == '1-0' else 0])
             for openingStats in self.openingData:
                 name, occurrences, wins = openingStats #what is in the lists in the opening data list
-                if occurrences > 25: #only if it occurs over 25 to eliminate noise of 100% success rates in few games
+                if occurrences > 15: #only if it occurs over 15 to eliminate noise of 100% success rates in few games
                     successRatio = wins / occurrences if occurrences > 0 else 0
                     self.winRatios.append([name, successRatio])
             self.winRatios2 = self.winRatios
 
     def playerAnalyzer(self):
-        self.playerData = []
-        self.playerData2 = []
         with open(self.csvFile, newline='') as csvfile:
             #creates csv manager for traversing rows
             csvReader = csv.DictReader(csvfile)
@@ -114,6 +125,7 @@ class ChessAnalyzer:
 
     def getPlayerOpeningUsage(self, name):
         if name not in self.playerData:
+            print("Player Not Found.")
             return
         if name not in self.playerOpeningUsage:
             self.playerOpeningUsage[name] = {}
@@ -129,8 +141,8 @@ class ChessAnalyzer:
                     self.playerOpeningUsage[name][openingName] += 1
         sorted_openings = sorted(self.playerOpeningUsage[name].items(), key=lambda x: x[1], reverse=True)
         playerStats = self.playerData[name]
-        print(f"{name}: {playerStats['ELO']} ELO, {playerStats['Wins']} Wins\n{name}'s top 3 Openings:")
-        for i in range(3):
+        print(f"{name}: {playerStats['ELO']} ELO, {playerStats['Wins']} Wins\n{name}'s top {min(playerStats['Wins'], 3)} Openings:")
+        for i in range(min(playerStats['Wins'], 3)):
             print(f"   {sorted_openings[i][0]}: Used {sorted_openings[i][1]} times")
 
     #Referenced from DSA Module 6 - Sorting by Amanpreet Kapoor
@@ -202,6 +214,7 @@ class ChessAnalyzer:
         return arr
 
     def openingPrinter(self, num):
+        print(len(self.winRatios))
         self.winRatios.reverse()
         for index, pair in enumerate(self.winRatios[:num], start=1):
             opening = pair[0]
@@ -225,8 +238,8 @@ class ChessAnalyzer:
             whiteRatingDiff = group[5]
             result = group[6]
             print(f"{index}. {whitePlayerName} vs. {blackPlayerName}")
-            print(f"    {whitePlayerName} Elo: {whitePlayerElo} | {blackPlayerName} Elo: {blackPlayerElo} | White Differential: {whiteRatingDiff}")
-            print(f"    Opening: {opening}")
-            print(f"    Result: {result}")
+            print(f"      {whitePlayerName} Elo: {whitePlayerElo} | {blackPlayerName} Elo: {blackPlayerElo} | White Differential: {whiteRatingDiff}")
+            print(f"      Opening: {opening}")
+            print(f"      Result: {result}")
         print()
         

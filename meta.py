@@ -8,6 +8,7 @@ print("What game mode would you like to analyze?\n(1) Blitz\n(2) Rapid\n(3) Clas
 inputMode = '0'
 selectedModes = []
 mode = ""
+all = False
 #process user input
 selectedInput = False
 while selectedInput == False:
@@ -28,6 +29,7 @@ while selectedInput == False:
     elif inputMode == '4':
         selectedModes = ['Rated Blitz game', 'Rated Blitz tournament','Rated Rapid game', 'Rated Rapid tournament','Rated Classical game','Rated Classical tournament']
         mode = "All Modes"
+        all = True
         selectedInput = True
     else:
         print("Invalid choice. Please enter a valid number.")
@@ -52,7 +54,6 @@ while notExited:
         print(f"Quick sort completed in {round((end-start), 3)} seconds")
         print()
 
-        analyzer.printer()
         print("How many of the most successful openings would you like to see?")
         numOpenings = input("Enter a numeric value: ")
         analyzer.openingPrinter(int(numOpenings))
@@ -66,7 +67,7 @@ while notExited:
 
     elif inputQuery == '3': #ELO Data
         print("Sorting ELO data (Comparing Merge & Quick Sort)...\n")
-        analyzer.eloAnalyzer()
+        analyzer.eloAnalyzer(all)
 
         start = time.time()
         analyzer.mergeSort(analyzer.eloData2)
