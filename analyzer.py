@@ -214,7 +214,6 @@ class ChessAnalyzer:
         return arr
 
     def openingPrinter(self, num):
-        print(len(self.winRatios))
         self.winRatios.reverse()
         for index, pair in enumerate(self.winRatios[:num], start=1):
             opening = pair[0]
